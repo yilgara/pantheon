@@ -1,0 +1,31 @@
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+
+# Caches / results
+.pytest_cache/
+.ruff_cache/
+results/
+worklog/
+*.log
+
+# LLM/data caches (added as backend grows)
+cache/
+data_cache/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

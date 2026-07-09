@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pantheon"
+version = "0.1.0"
+description = "Pantheon: a multi-agent investment fund, built as an evaluation test subject"
+readme = "README.md"
+requires-python = ">=3.10"
+# Dependencies are added as we build each module, to keep the install lean.
+dependencies = []
+
+[tool.setuptools.packages.find]
+include = ["pantheon*"]
