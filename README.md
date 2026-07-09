@@ -1,7 +1,6 @@
 # Pantheon
 
-A multi-agent **investment fund** system, written from scratch as a **test subject**
-for evaluating mixed-initiative / multi-agent systems.
+A multi-agent **investment fund** system.
 
 Pantheon's agents are designed around the role taxonomy and six-dimension design space
 from Stähle et al., *"A Design Space for Intelligent Agents in Mixed-Initiative Visual
