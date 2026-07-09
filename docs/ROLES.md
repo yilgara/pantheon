@@ -11,6 +11,9 @@ with **two back-to-back debate structures** (a research debate and a risk debate
 each resolved by a manager acting as a judge. Pantheon adds **one** agent of its own:
 the **Equity Scanner** (a human/software toggle for the discovery step).
 
+> New to the vocabulary? See [`DIMENSIONS.md`](DIMENSIONS.md) for a plain-English
+> explanation of every dimension and value — no need to read the paper.
+
 ## The six dimensions (reference)
 
 | # | Dimension | Attributes (values used in this spec) |
@@ -26,7 +29,7 @@ the **Equity Scanner** (a human/software toggle for the discovery step).
 
 | # | Agent | Type | Paper Role(s) | Interplay |
 |---|-------|------|---------------|-----------|
-| 0 | Equity Scanner *(Pantheon addition)* | Human ⇄ Software | Explorer, Ranker, Instructor, Interactor | Cooperative |
+| 0 | Equity Scanner | Human ⇄ Software | Explorer, Ranker, Instructor, Interactor | Cooperative |
 | 1 | Market Analyst | Software | Analyzer | Cooperative |
 | 2 | Social Media Analyst | Software | Analyzer, Summarizer | Cooperative |
 | 3 | News Analyst | Software | Analyzer | Cooperative |
@@ -63,7 +66,7 @@ Equity Scanner ──► Analyst Team (Market → Social → News → Fundamenta
 
 ---
 
-## Agent 0 — Equity Scanner  *(Pantheon addition; the discovery step; mixed-initiative toggle)*
+## Agent 0 — Equity Scanner  
 
 The single design lever that distinguishes Pantheon from TradingAgents: *who chooses
 what to trade.* TradingAgents takes the ticker as a given; Pantheon makes the selection
