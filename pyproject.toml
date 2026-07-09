@@ -8,8 +8,24 @@ version = "0.1.0"
 description = "Pantheon: a multi-agent investment fund, built as an evaluation test subject"
 readme = "README.md"
 requires-python = ">=3.10"
-# Dependencies are added as we build each module, to keep the install lean.
-dependencies = []
+dependencies = [
+    "langchain-core>=0.3",
+    "langgraph>=0.2",
+    "pydantic>=2.0",
+    "python-dotenv>=1.0",
+    "pandas>=2.0",
+    "yfinance>=0.2",
+    "stockstats>=0.6",
+]
+
+[project.optional-dependencies]
+# LLM providers — install only the one(s) you use.
+openai = ["langchain-openai>=0.2"]
+anthropic = ["langchain-anthropic>=0.2"]
+google = ["langchain-google-genai>=2.0"]
+ollama = ["langchain-ollama>=0.2"]
+# Backend API.
+backend = ["fastapi>=0.115", "uvicorn>=0.30"]
 
 [tool.setuptools.packages.find]
 include = ["pantheon*"]
