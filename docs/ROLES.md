@@ -56,9 +56,7 @@ Equity Scanner ──► Analyst Team (Market → Social → News → Fundamenta
 
 ## Agent 0 — Equity Scanner  
 
-The single design lever that distinguishes Pantheon from TradingAgents: *who chooses
-what to trade.* TradingAgents takes the ticker as a given; Pantheon makes the selection
-step explicit and runtime-switchable between two configurations.
+Runtime-switchable between two configurations.
 
 ### Mode A — Human
 
