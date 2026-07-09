@@ -6,24 +6,12 @@ Analytics"* (arXiv:2512.23372). This document is the design contract: it defines
 each agent **before** implementation, so the code and the evaluation both speak the
 same vocabulary.
 
-**Architecture:** Pantheon mirrors the TradingAgents architecture — a 13-agent firm
-with **two back-to-back debate structures** (a research debate and a risk debate),
-each resolved by a manager acting as a judge. Pantheon adds **one** agent of its own:
-the **Equity Scanner** (a human/software toggle for the discovery step).
+**Architecture:** 14-agent firm with **two back-to-back debate structures** (a research debate and a risk debate),
+each resolved by a manager acting as a judge. **One** toggled agent: the **Equity Scanner** (a human/software toggle for the discovery step).
 
 > New to the vocabulary? See [`DIMENSIONS.md`](DIMENSIONS.md) for a plain-English
-> explanation of every dimension and value — no need to read the paper.
+> explanation of every dimension and value 
 
-## The six dimensions (reference)
-
-| # | Dimension | Attributes (values used in this spec) |
-|---|-----------|----------------------------------------|
-| 1 | **Configuration & Logic** | Type {Human, Wizard, Software} · Role {Analyzer, Instructor, Interactor, Recommender, Explorer, Visualizer, Generator, Ranker, Judge, Summarizer, Labeler} · Model Type {Rule-Based, Generative AI, Human Brain, …} · Autonomy {Internal Deliberate, Internal Spontaneous, External} · Adaptation {Internal, External Observations, External Communication, None} |
-| 2 | **World Model** | Provenance {Observation/Action/Interaction/Communication History, None} · Persistence {Continuous, Session-Based, Not Persistent} · Data Awareness · Agent Awareness · Task Awareness |
-| 3 | **Observations** | Data Structure {Structured, Semi-Structured, Unstructured} · Sensor Modality {Text, Numeric, Visual, Code} · Context Level {One Input, Multiple Inputs, Whole Environment} · Synchronism · Trigger {Internal, Communication-Based, Infrastructure-Based} |
-| 4 | **Communication** | Payload {Signal, Signal+Data, None} · Type Out/In {Notification, Instruction, Request, Feedback, Availability, None} · Internal Sharing {Operational, World Model, None} · Trigger |
-| 5 | **Actions** | CRUD {Create, Update, Delete} · Type {Writing, Counting, Coding, Visualizing, Interacting} · Affected Scope {Entire Environment, Part of World Model, Outside of World Model} · Trigger · Delay {No Delay, Static, Metric-Based, Until Acknowledged} |
-| 6 | **Infrastructure** | Initialized/Dynamic Modules {Configuration, Observation, Action, Communication} · Agent Interplay {Independent, Cooperative, Competitive} |
 
 ## Roster (14 agents)
 
@@ -207,7 +195,4 @@ Symmetric to the Bull: Type Software · Role **Judge** · Outgoing **Feedback** 
   - **Competitive** channels: Bull vs Bear (research debate); Aggressive vs Conservative vs Neutral (risk debate)
   - Two **judge** agents resolve the two debates: Research Manager, Portfolio Manager
 
-## Role coverage (against the paper's 11 roles)
 
-Covered: Analyzer, Summarizer, Explorer, Ranker, Instructor, Interactor, Judge, Recommender.
-Not used: Visualizer (would need a charting agent), Generator, Labeler.

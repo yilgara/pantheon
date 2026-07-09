@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pantheon</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Pantheon<span class="dot">.</span></h1>
+    <div class="controls">
+      <div class="toggle" id="mode-toggle">
+        <button data-mode="human" class="active">Human picks</button>
+        <button data-mode="agent">Scanner picks</button>
+      </div>
+      <span id="input-human"><input id="ticker" value="NVDA" size="6" /></span>
+      <span id="input-agent" style="display:none">
+        <select id="universe">
+          <option>S&amp;P 8 (demo universe)</option>
+        </select>
+        top-N <input id="topn" value="1" size="2" />
+      </span>
+      <button class="run-btn" id="run">Run ▶</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- Pipeline -->
+    <div class="col left">
+      <h2>Pipeline</h2>
+      <div id="pipeline"></div>
+    </div>
+
+    <!-- Conversation feed -->
+    <div class="col center">
+      <div class="feed" id="feed">
+        <div class="empty">Choose a mode and press <b>Run</b> to watch the fund work.</div>
+      </div>
+    </div>
+
+    <!-- Decision + portfolio -->
+    <div class="col right">
+      <h2>Decision</h2>
+      <div class="card decision-card hidden" id="decision">
+        <div class="decision-action" id="decision-action">—</div>
+        <div class="decision-meta" id="decision-meta"></div>
+      </div>
+
+      <h2>Portfolio</h2>
+      <div class="card portfolio-card pending" id="portfolio">
+        <div class="kv"><span>Cash</span><span class="v" id="pf-cash">$100,000</span></div>
+        <div class="kv"><span>Risk score</span><span class="v" id="pf-risk">0.0</span></div>
+        <div class="pos" id="pf-positions">No positions.</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="mock/run.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

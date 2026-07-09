@@ -1,0 +1,133 @@
+:root {
+  --bg: #0d1117;
+  --panel: #161b22;
+  --panel-2: #1c2330;
+  --border: #2a3240;
+  --text: #e6edf3;
+  --muted: #8b949e;
+  --accent: #58a6ff;
+
+  --analyst: #58a6ff;
+  --bull: #3fb950;
+  --bear: #f85149;
+  --manager: #bc8cff;
+  --trader: #d29922;
+  --risk-aggressive: #ff7b72;
+  --risk-conservative: #79c0ff;
+  --risk-neutral: #8b949e;
+  --pm: #2dd4bf;
+  --scanner: #e3b341;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* ---------- Header ---------- */
+header {
+  display: flex; align-items: center; gap: 20px;
+  padding: 14px 20px; border-bottom: 1px solid var(--border);
+  background: var(--panel);
+}
+header h1 { font-size: 18px; margin: 0; letter-spacing: .5px; }
+header h1 .dot { color: var(--pm); }
+.controls { display: flex; align-items: center; gap: 14px; margin-left: auto; flex-wrap: wrap; }
+
+.toggle { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.toggle button {
+  background: transparent; color: var(--muted); border: 0; padding: 8px 14px;
+  cursor: pointer; font-size: 13px; font-weight: 600;
+}
+.toggle button.active { background: var(--panel-2); color: var(--text); }
+
+input, select {
+  background: var(--panel-2); color: var(--text); border: 1px solid var(--border);
+  border-radius: 6px; padding: 7px 10px; font-size: 13px;
+}
+.run-btn {
+  background: var(--pm); color: #05221f; border: 0; border-radius: 6px;
+  padding: 8px 18px; font-weight: 700; cursor: pointer; font-size: 13px;
+}
+.run-btn:disabled { opacity: .5; cursor: default; }
+
+/* ---------- Layout ---------- */
+.layout {
+  display: grid; grid-template-columns: 240px 1fr 300px; gap: 0;
+  height: calc(100vh - 59px);
+}
+.col { overflow-y: auto; padding: 16px; }
+.col.left { border-right: 1px solid var(--border); background: var(--panel); }
+.col.right { border-left: 1px solid var(--border); background: var(--panel); }
+.col h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 0 0 12px; }
+
+/* ---------- Pipeline (left) ---------- */
+.stage { margin-bottom: 6px; }
+.stage-label { font-size: 10px; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); margin: 14px 0 6px; }
+.node {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 10px; border-radius: 6px; border: 1px solid var(--border);
+  background: var(--panel-2); margin-bottom: 5px; font-size: 12.5px;
+  opacity: .45; transition: opacity .3s, border-color .3s;
+}
+.node .swatch { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.node.active { opacity: 1; border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.node.done { opacity: 1; }
+.node .tick { margin-left: auto; color: var(--bull); font-size: 12px; opacity: 0; }
+.node.done .tick { opacity: 1; }
+
+/* ---------- Feed (center) ---------- */
+.feed { max-width: 760px; margin: 0 auto; }
+.empty { color: var(--muted); text-align: center; margin-top: 80px; }
+.msg {
+  border: 1px solid var(--border); border-left-width: 3px; border-radius: 8px;
+  background: var(--panel); padding: 12px 14px; margin-bottom: 12px;
+  animation: rise .35s ease both;
+}
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.msg .head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+.msg .agent { font-weight: 700; }
+.msg .role { font-size: 11px; color: var(--muted); }
+.msg .body { color: var(--text); }
+.msg .body strong { color: #fff; }
+
+.debate-tag {
+  display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .5px; padding: 1px 7px; border-radius: 4px; margin-left: auto;
+}
+.tag-competitive { background: rgba(248,81,73,.15); color: var(--bear); border: 1px solid rgba(248,81,73,.4); }
+
+.ranking { margin-top: 8px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+.ranking div { display: flex; justify-content: space-between; padding: 4px 10px; font-size: 12px; }
+.ranking div:nth-child(odd) { background: var(--panel-2); }
+.ranking .top { color: var(--scanner); font-weight: 700; }
+
+/* team accent colors on the left border + agent name */
+.t-scanner { border-left-color: var(--scanner); } .t-scanner .agent { color: var(--scanner); }
+.t-analyst { border-left-color: var(--analyst); } .t-analyst .agent { color: var(--analyst); }
+.t-bull { border-left-color: var(--bull); } .t-bull .agent { color: var(--bull); }
+.t-bear { border-left-color: var(--bear); } .t-bear .agent { color: var(--bear); }
+.t-manager { border-left-color: var(--manager); } .t-manager .agent { color: var(--manager); }
+.t-trader { border-left-color: var(--trader); } .t-trader .agent { color: var(--trader); }
+.t-risk-aggressive { border-left-color: var(--risk-aggressive); } .t-risk-aggressive .agent { color: var(--risk-aggressive); }
+.t-risk-conservative { border-left-color: var(--risk-conservative); } .t-risk-conservative .agent { color: var(--risk-conservative); }
+.t-risk-neutral { border-left-color: var(--risk-neutral); } .t-risk-neutral .agent { color: var(--risk-neutral); }
+.t-pm { border-left-color: var(--pm); } .t-pm .agent { color: var(--pm); }
+
+/* ---------- Right panel ---------- */
+.card { background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 14px; }
+.decision-card { border-color: var(--pm); }
+.decision-card.hidden, .portfolio-card.pending .after { display: none; }
+.decision-action { font-size: 26px; font-weight: 800; letter-spacing: 1px; }
+.decision-action.BUY { color: var(--bull); }
+.decision-action.SELL { color: var(--bear); }
+.decision-action.HOLD { color: var(--muted); }
+.decision-meta { color: var(--muted); font-size: 12.5px; margin-top: 6px; }
+.kv { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.kv:last-child { border-bottom: 0; }
+.kv .v { font-variant-numeric: tabular-nums; font-weight: 600; }
+.pos { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+.pos b { color: var(--text); }
