@@ -38,7 +38,7 @@ A `TypedDict` extending `MessagesState`, mirroring the reference:
 - `investment_plan` (Research Manager output), `trade_proposal` (Trader output)
 - `risk_debate`: `{aggressive_history, conservative_history, neutral_history, history, latest_speaker, count, judge_decision}`
 - `final_decision`
-- **Pantheon addition:** `selected_by` (`"human"` | `"scanner"`), `scanner_ranking`
+- **Pantheon addition:** `selected_by` (fixed `"human"` — the Equity Scanner is a human who supplies the ticker)
 
 **Key idea:** debate transcripts are plain **concatenated strings**; `count` drives termination (no content parsing).
 
@@ -61,7 +61,7 @@ Helper `invoke_structured_or_freetext(structured_llm, plain_llm, prompt, render)
 
 ### Graph wiring (`pantheon/graph/build.py`)
 `StateGraph(State)` with:
-1. **Scanner node** (Pantheon) → first analyst  ← the one structural addition
+1. **Human ticker selection** — the human (Equity Scanner) supplies the ticker into `create_initial_state`; the graph starts at the first analyst (no scanner node)
 2. Analysts chained sequentially, each with a **tool-loop** (conditional edge on `tool_calls` → tool node → back; else → next analyst)
 3. Last analyst → **Bull**; Bull⇄Bear conditional loop (`count >= 2*max_debate_rounds` → Research Manager)
 4. Research Manager → Trader → Aggressive
@@ -83,7 +83,7 @@ Helper `invoke_structured_or_freetext(structured_llm, plain_llm, prompt, render)
 
 | Piece | Source |
 |---|---|
-| Scanner node + human/agent toggle | **Pantheon (new)** |
+| Human Equity Scanner (human supplies the ticker) | **Pantheon (new)** |
 | Structured event tracing | **Pantheon (new)** |
 | State shape, agent factory pattern, debate loops, graph wiring | Clean-room reimpl of the reference approach |
 | Data router + string providers + @tool wrappers + disk cache | Clean-room reimpl of the reference approach |

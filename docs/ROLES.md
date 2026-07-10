@@ -7,8 +7,7 @@ each agent **before** implementation, so the code and the evaluation both speak 
 same vocabulary.
 
 **Architecture:** 14-agent firm with **two back-to-back debate structures** (a research debate and a risk debate),
-each resolved by a manager acting as a judge. **One** toggled agent: the **Equity Scanner** (a human/software toggle for the discovery step).
-
+each resolved by a manager acting as a judge. **One** human agent: the **Equity Scanner**.
 > New to the vocabulary? See [`DIMENSIONS.md`](DIMENSIONS.md) for a plain-English
 > explanation of every dimension and value 
 
@@ -17,7 +16,7 @@ each resolved by a manager acting as a judge. **One** toggled agent: the **Equit
 
 | # | Agent | Type | Paper Role(s) | Interplay |
 |---|-------|------|---------------|-----------|
-| 0 | Equity Scanner | Human ⇄ Software | Explorer, Ranker, Instructor, Interactor | Cooperative |
+| 0 | Equity Scanner | Human | Explorer, Instructor, Interactor | Cooperative |
 | 1 | Market Analyst | Software | Analyzer | Cooperative |
 | 2 | Social Media Analyst | Software | Analyzer, Summarizer | Cooperative |
 | 3 | News Analyst | Software | Analyzer | Cooperative |
@@ -56,9 +55,8 @@ Equity Scanner ──► Analyst Team (Market → Social → News → Fundamenta
 
 ## Agent 0 — Equity Scanner  
 
-Runtime-switchable between two configurations.
 
-### Mode A — Human
+### Human
 
 | Dimension | Details |
 |---|---|
@@ -69,18 +67,7 @@ Runtime-switchable between two configurations.
 | **5 · Actions** | Type: **Interacting** · CRUD: Create (sets target) · Scope: Outside World Model · Trigger: Internal |
 | **6 · Interplay** | External initiator (the mixed-initiative anchor) |
 
-### Mode B — Software
 
-| Dimension | Details |
-|---|---|
-| **1 · Configuration** | Type: **Software** · Role: **Explorer + Ranker**<br>Model: Rule-Based (+ optional Generative AI) · Autonomy: Internal Spontaneous · Adaptation: External Observations |
-| **2 · World Model** | Provenance: Observation History · Persistence: Session-Based · Data Awareness: Subpart of Observation |
-| **3 · Observations** | Data Structure: Structured (universe metrics) · Modality: **Numeric** · Context: Whole Environment · Trigger: Infrastructure-Based (new session) |
-| **4 · Communication** | Outgoing: **Notification** (top-N candidates) → Analyst Team |
-| **5 · Actions** | Type: **Counting** · CRUD: Create (ranked candidate list) · Scope: Part of World Model |
-| **6 · Interplay** | **Cooperative** (feeds the pipeline) |
-
----
 
 ## Analyst Team  *(perceive & interpret — all Analyzers, differentiated by Sensor Modality)*
 
