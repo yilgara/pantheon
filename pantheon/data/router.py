@@ -14,23 +14,27 @@ from typing import Callable
 from pantheon.config import get_config
 from pantheon.data.cache import cached_text
 from pantheon.data.errors import NoData, NotConfigured, RateLimit, VendorError
-from pantheon.data.providers import mock, yfin
+from pantheon.data.providers import alpha_vantage as av
+from pantheon.data.providers import fred, mock, polymarket, social, yfin
 
 logger = logging.getLogger(__name__)
 
-# category -> vendor -> callable(ticker, *args)
+# category -> vendor -> callable(key, *args)
 _REGISTRY: dict[str, dict[str, Callable]] = {
-    "stock":        {"yfinance": yfin.stock,        "mock": mock.stock},
+    "stock":        {"yfinance": yfin.stock,        "alpha_vantage": av.stock,        "mock": mock.stock},
     "indicators":   {"yfinance": yfin.indicators,   "mock": mock.indicators},
-    "fundamentals": {"yfinance": yfin.fundamentals, "mock": mock.fundamentals},
-    "news":         {"yfinance": yfin.news,         "mock": mock.news},
-    # macro / prediction_markets: not implemented in v1 → degrade to sentinel
+    "fundamentals": {"yfinance": yfin.fundamentals, "alpha_vantage": av.fundamentals, "mock": mock.fundamentals},
+    "news":         {"yfinance": yfin.news,         "alpha_vantage": av.news,         "mock": mock.news},
+    "social":       {"stocktwits": social.stocktwits, "reddit": social.reddit,        "mock": mock.social},
+    "macro":        {"fred": fred.macro,             "mock": mock.macro},
+    "prediction_markets": {"polymarket": polymarket.prediction_markets,               "mock": mock.prediction_markets},
 }
 
-# Ordered fallbacks after the configured primary vendor.
+# Ordered fallbacks after the configured primary vendor (mock is always last).
 _FALLBACKS: dict[str, list[str]] = {
-    "stock": ["mock"], "indicators": ["mock"],
-    "fundamentals": ["mock"], "news": ["mock"],
+    "stock": ["alpha_vantage", "mock"], "indicators": ["mock"],
+    "fundamentals": ["alpha_vantage", "mock"], "news": ["alpha_vantage", "mock"],
+    "social": ["reddit", "mock"], "macro": ["mock"], "prediction_markets": ["mock"],
 }
 
 

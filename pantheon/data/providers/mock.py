@@ -53,3 +53,30 @@ def news(ticker: str, curr_date: str) -> str:
         f"Overall tone: {tone}. Headlines: demand trends, an upcoming earnings catalyst, "
         f"and no adverse regulatory news."
     )
+
+
+def social(ticker: str, curr_date: str) -> str:
+    s = _seed(ticker)
+    bull = round(s * 100)
+    return (
+        f"# [MOCK] Social sentiment for {ticker} @ {curr_date}\n"
+        f"Crowd is {bull}% bullish. Mentions {'rising' if s > 0.5 else 'flat'}; "
+        f"{'euphoric FOMO tone (a mild contrarian flag)' if s > 0.7 else 'measured discussion'}."
+    )
+
+
+def macro(topic: str, curr_date: str) -> str:
+    return (
+        f"# [MOCK] Macro backdrop @ {curr_date}\n"
+        "Fed funds ~5.3%, CPI cooling, 10Y ~4.4%, unemployment ~3.9%. "
+        "Backdrop neutral-to-supportive for equities."
+    )
+
+
+def prediction_markets(topic: str, curr_date: str | None = None) -> str:
+    s = _seed(topic)
+    return (
+        f"# [MOCK] Prediction markets for '{topic}'\n"
+        f"- Positive quarterly outcome — {round(45 + s*40)}%\n"
+        f"- Sector outperforms next month — {round(40 + s*30)}%"
+    )

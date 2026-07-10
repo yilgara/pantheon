@@ -29,6 +29,7 @@ DEFAULT_CONFIG: dict[str, Any] = {
         "indicators": "yfinance",
         "fundamentals": "yfinance",
         "news": "yfinance",
+        "social": "stocktwits",
         "macro": "fred",
         "prediction_markets": "polymarket",
     },

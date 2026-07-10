@@ -51,8 +51,33 @@ def get_news(
     return router.get("news", ticker, curr_date)
 
 
+@tool
+def get_social_sentiment(
+    ticker: Annotated[str, "Ticker symbol, e.g. NVDA"],
+    curr_date: Annotated[str, "As-of date, yyyy-mm-dd"],
+) -> str:
+    """Crowd sentiment from social platforms (StockTwits / Reddit)."""
+    return router.get("social", ticker, curr_date)
+
+
+@tool
+def get_macro_indicators(
+    curr_date: Annotated[str, "As-of date, yyyy-mm-dd"],
+) -> str:
+    """Macro backdrop (rates, inflation, growth) as of a date."""
+    return router.get("macro", "global", curr_date)
+
+
+@tool
+def get_prediction_markets(
+    topic: Annotated[str, "Event topic to search, e.g. a company or theme"],
+) -> str:
+    """Forward-looking, market-implied probabilities from prediction markets."""
+    return router.get("prediction_markets", topic)
+
+
 # Convenient groupings for each analyst's tool binding.
 MARKET_TOOLS = [get_stock_data, get_indicators]
 FUNDAMENTALS_TOOLS = [get_fundamentals]
-NEWS_TOOLS = [get_news]
-SOCIAL_TOOLS = [get_news]  # v1: reuse news as the social/sentiment signal
+NEWS_TOOLS = [get_news, get_macro_indicators, get_prediction_markets]
+SOCIAL_TOOLS = [get_social_sentiment]
