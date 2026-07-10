@@ -8,7 +8,7 @@ report into the state.
 
 from __future__ import annotations
 
-from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 
 from pantheon.agents.tools import FUNDAMENTALS_TOOLS, MARKET_TOOLS, NEWS_TOOLS, SOCIAL_TOOLS
 
@@ -21,22 +21,35 @@ _BASE = (
 )
 
 
-def _make_analyst(name, role, focus, tools, report_key):
+def _make_analyst(name, role, focus, tools, report_key, max_tool_iters: int = 4):
+    """Analyst node with a self-contained tool loop.
+
+    The node runs its own request→tool→request cycle (up to max_tool_iters) and
+    writes only its report to the state — keeping the shared message channel
+    clean between analysts.
+    """
+    tools_by_name = {t.name: t for t in tools}
+
     def node(state) -> dict:
         system = _BASE.format(role=role, ticker=state["ticker"], date=state["trade_date"], focus=focus)
-        # Seed the conversation on the first pass; afterwards the graph feeds
-        # tool results back through state["messages"].
-        messages = state["messages"]
-        if not any(isinstance(m, SystemMessage) for m in messages):
-            messages = [SystemMessage(content=system),
-                        HumanMessage(content=f"Analyze {state['ticker']} as of {state['trade_date']}.")]
-
+        msgs = [SystemMessage(content=system),
+                HumanMessage(content=f"Analyze {state['ticker']} as of {state['trade_date']}.")]
         llm_with_tools = _llm().bind_tools(tools)
-        result = llm_with_tools.invoke(messages)
 
-        # If the model wants tools, loop (report stays empty this pass).
-        report = "" if getattr(result, "tool_calls", None) else result.content
-        return {"messages": [result], report_key: report, "sender": name}
+        result = None
+        for _ in range(max_tool_iters):
+            result = llm_with_tools.invoke(msgs)
+            msgs.append(result)
+            calls = getattr(result, "tool_calls", None) or []
+            if not calls:
+                break
+            for tc in calls:
+                fn = tools_by_name.get(tc["name"])
+                out = fn.invoke(tc["args"]) if fn else f"(unknown tool {tc['name']})"
+                msgs.append(ToolMessage(content=str(out), tool_call_id=tc.get("id", "")))
+
+        report = result.content if result is not None else ""
+        return {report_key: report, "sender": name}
 
     return node
 
