@@ -2,9 +2,21 @@
 
 from __future__ import annotations
 
+import json
+
 from pantheon.data.errors import NoData
 
 GAMMA = "https://gamma-api.polymarket.com"
+
+
+def _as_list(v):
+    """Polymarket returns outcomes/prices as JSON-encoded strings; normalize to lists."""
+    if isinstance(v, str):
+        try:
+            return json.loads(v)
+        except Exception:  # noqa: BLE001
+            return None
+    return v
 
 
 def prediction_markets(topic: str, curr_date: str | None = None, limit: int = 6) -> str:
@@ -21,15 +33,18 @@ def prediction_markets(topic: str, curr_date: str | None = None, limit: int = 6)
     lines = []
     for event in data.get("events", []):
         for m in event.get("markets", []):
+            if m.get("closed") or not m.get("active", True):
+                continue
             q = m.get("question")
-            outcomes = m.get("outcomes")
-            prices = m.get("outcomePrices")
-            if q and outcomes and prices:
+            prices = _as_list(m.get("outcomePrices"))
+            outcomes = _as_list(m.get("outcomes"))
+            if q and prices:
                 try:
-                    prob = float(prices[0]) if isinstance(prices, list) else float(str(prices).strip("[]").split(",")[0])
-                    lines.append(f"- {q} — {prob:.0%}")
-                except Exception:  # noqa: BLE001
+                    prob = float(prices[0])
+                except (TypeError, ValueError):
                     continue
+                label = f" ({outcomes[0]})" if outcomes else ""
+                lines.append(f"- {q}{label}: {prob:.0%}")
             if len(lines) >= limit:
                 break
         if len(lines) >= limit:
