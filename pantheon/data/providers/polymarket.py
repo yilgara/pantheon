@@ -19,6 +19,26 @@ def _as_list(v):
     return v
 
 
+def _is_forward_looking(m: dict) -> bool:
+    """Keep only unresolved, future-resolving markets.
+
+    `closed` is the reliable resolved flag (`active` stays True even for settled
+    markets), and a past `endDate` means the event already resolved.
+    """
+    from datetime import datetime, timezone
+
+    if m.get("closed"):
+        return False
+    end = m.get("endDate")
+    if end:
+        try:
+            if datetime.fromisoformat(end.replace("Z", "+00:00")) < datetime.now(timezone.utc):
+                return False
+        except (ValueError, AttributeError):
+            pass
+    return True
+
+
 def prediction_markets(topic: str, curr_date: str | None = None, limit: int = 6) -> str:
     import requests
 
@@ -33,7 +53,7 @@ def prediction_markets(topic: str, curr_date: str | None = None, limit: int = 6)
     lines = []
     for event in data.get("events", []):
         for m in event.get("markets", []):
-            if m.get("closed") or not m.get("active", True):
+            if not _is_forward_looking(m):
                 continue
             q = m.get("question")
             prices = _as_list(m.get("outcomePrices"))
